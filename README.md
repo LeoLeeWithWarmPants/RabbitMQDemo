@@ -1,0 +1,2 @@
+# RabbitMQDemo
+Learn RabbitMQ thoroughly
