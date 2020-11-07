@@ -8,3 +8,4 @@ spring:
     username: LeoLee
     password: lyl512240816
     virtual-host: /LeoLee
+    publisher-confirms: true #开启confirm确认模式
