@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 
 /**
  * @ClassName TestMsgListener
- * @Description: 监听MQ消息
+ * @Description: 监听MQ消息(测试需要,暂时屏蔽@RabbitListener(queues = "boot_queue"))
  * @Author LeoLee
  * @Date 2020/11/7
  * @Version V1.0
  **/
 @Component
-@RabbitListener(queues = "boot_queue")
+//@RabbitListener(queues = "boot_queue")
 public class TestMsgListener {
 
     public static final String QUEUE_NAME = "boot_queue";
 
-    @RabbitListener(queues = "boot_queue")
+//    @RabbitListener(queues = "boot_queue")
     public void listenerQueue(Message message) {
 
         System.out.println("方法上@RabbitListener:" + new String(message.getBody()));
