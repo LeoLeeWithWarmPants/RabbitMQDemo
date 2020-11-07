@@ -1,4 +1,4 @@
-package com.leolee.rabbitmq;
+package com.leolee.rabbitmq.test;
 
 import com.rabbitmq.client.*;
 
@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @ClassName ConsumerPubSub1
- * @Description: Routing模式
+ * @ClassName ConsumerHelloWorld
+ * @Description: MQ消费者
  * @Author LeoLee
- * @Date 2020/11/6
+ * @Date 2020/11/5
  * @Version V1.0
  **/
-public class ConsumerRouting1 {
+public class ConsumerHelloWorld {
 
     public static void main(String[] args) throws IOException, TimeoutException {
 
@@ -43,16 +43,14 @@ public class ConsumerRouting1 {
          Map<String, Object> arguments: 一些配置参数
          */
         //如果没有一个名字叫Hello_world的队列，则会创建，如果存在该队列，则复用
-        //生产者已经生命过了队列，可以忽略该步骤
-        //channel.queueDeclare("workQueues", false, false, false, null);
-        String queueName1 = "test_direct_queue1";
+        //channel.queueDeclare("Hello_world", false, false, false, null);
 
         //6.接收消息
         /*
-         * String queue:队列名称
-         * boolean autoAck:是否自动确认，当消费者收到消息之后会自动给MQ一个回执，告诉MQ消息已经收到
-         * Consumer callback:回调方法
-         */
+        * String queue:队列名称
+        * boolean autoAck:是否自动确认，当消费者收到消息之后会自动给MQ一个回执，告诉MQ消息已经收到
+        * Consumer callback:回调方法
+        */
         Consumer consumer = new DefaultConsumer(channel){
 
             /*
@@ -69,15 +67,15 @@ public class ConsumerRouting1 {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-                /*System.out.println("consumerTag:" + consumerTag);
+                System.out.println("consumerTag:" + consumerTag);
                 System.out.println("envelope.exchange:" + envelope.getExchange());
                 System.out.println("envelope.routingKey:" + envelope.getRoutingKey());
-                System.out.println("properties:" + properties);*/
-                System.out.println("消费者1从队列" + queueName1 + "接收到body:" + new String(body));
+                System.out.println("properties:" + properties);
+                System.out.println("body:" + new String(body));
 
             }
         };
-        channel.basicConsume(queueName1, true, consumer);
+        channel.basicConsume("Hello_world", true, consumer);
 
         //7.消费者不需要关闭资源，不然无法完成自动确认
     }

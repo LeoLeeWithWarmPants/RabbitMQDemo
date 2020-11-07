@@ -1,4 +1,4 @@
-package com.leolee.rabbitmq;
+package com.leolee.rabbitmq.test;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

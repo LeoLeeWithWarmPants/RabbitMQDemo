@@ -1,4 +1,4 @@
-package com.leolee.rabbitmq;
+package com.leolee.rabbitmq.test;
 
 import com.rabbitmq.client.*;
 
@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @ClassName ConsumerHelloWorld
- * @Description: MQ消费者 work queues模式
+ * @ClassName ConsumerPubSub1
+ * @Description: Publish/Subscribe模式
  * @Author LeoLee
- * @Date 2020/11/5
+ * @Date 2020/11/6
  * @Version V1.0
  **/
-public class ConsumerWorkQueues1 {
+public class ConsumerPubSub1 {
 
     public static void main(String[] args) throws IOException, TimeoutException {
 
@@ -43,14 +43,16 @@ public class ConsumerWorkQueues1 {
          Map<String, Object> arguments: 一些配置参数
          */
         //如果没有一个名字叫Hello_world的队列，则会创建，如果存在该队列，则复用
-        channel.queueDeclare("workQueues", false, false, false, null);
+        //生产者已经生命过了队列，可以忽略该步骤
+        //channel.queueDeclare("workQueues", false, false, false, null);
+        String queueName1 = "test_fanout_queue1";
 
         //6.接收消息
         /*
-        * String queue:队列名称
-        * boolean autoAck:是否自动确认，当消费者收到消息之后会自动给MQ一个回执，告诉MQ消息已经收到
-        * Consumer callback:回调方法
-        */
+         * String queue:队列名称
+         * boolean autoAck:是否自动确认，当消费者收到消息之后会自动给MQ一个回执，告诉MQ消息已经收到
+         * Consumer callback:回调方法
+         */
         Consumer consumer = new DefaultConsumer(channel){
 
             /*
@@ -71,11 +73,11 @@ public class ConsumerWorkQueues1 {
                 System.out.println("envelope.exchange:" + envelope.getExchange());
                 System.out.println("envelope.routingKey:" + envelope.getRoutingKey());
                 System.out.println("properties:" + properties);*/
-                System.out.println("body:" + new String(body));
+                System.out.println("消费者1从队列" + queueName1 + "接收到body:" + new String(body));
 
             }
         };
-        channel.basicConsume("workQueues", true, consumer);
+        channel.basicConsume(queueName1, true, consumer);
 
         //7.消费者不需要关闭资源，不然无法完成自动确认
     }

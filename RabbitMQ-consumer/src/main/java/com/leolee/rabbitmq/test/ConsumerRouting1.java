@@ -1,4 +1,4 @@
-package com.leolee.rabbitmq;
+package com.leolee.rabbitmq.test;
 
 import com.rabbitmq.client.*;
 
@@ -7,12 +7,12 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @ClassName ConsumerPubSub1
- * @Description: Topics模式
+ * @Description: Routing模式
  * @Author LeoLee
  * @Date 2020/11/6
  * @Version V1.0
  **/
-public class ConsumerTopics1 {
+public class ConsumerRouting1 {
 
     public static void main(String[] args) throws IOException, TimeoutException {
 
@@ -45,7 +45,7 @@ public class ConsumerTopics1 {
         //如果没有一个名字叫Hello_world的队列，则会创建，如果存在该队列，则复用
         //生产者已经生命过了队列，可以忽略该步骤
         //channel.queueDeclare("workQueues", false, false, false, null);
-        String queueName1 = "test_topic_queue1";
+        String queueName1 = "test_direct_queue1";
 
         //6.接收消息
         /*

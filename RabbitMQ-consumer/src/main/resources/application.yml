@@ -1,0 +1,10 @@
+server:
+  port: 2002
+
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: LeoLee
+    password: lyl512240816
+    virtual-host: /LeoLee

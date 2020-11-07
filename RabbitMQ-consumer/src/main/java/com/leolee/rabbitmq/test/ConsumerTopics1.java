@@ -1,4 +1,4 @@
-package com.leolee.rabbitmq;
+package com.leolee.rabbitmq.test;
 
 import com.rabbitmq.client.*;
 
@@ -7,12 +7,12 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @ClassName ConsumerPubSub1
- * @Description: Publish/Subscribe模式
+ * @Description: Topics模式
  * @Author LeoLee
  * @Date 2020/11/6
  * @Version V1.0
  **/
-public class ConsumerPubSub2 {
+public class ConsumerTopics1 {
 
     public static void main(String[] args) throws IOException, TimeoutException {
 
@@ -45,7 +45,7 @@ public class ConsumerPubSub2 {
         //如果没有一个名字叫Hello_world的队列，则会创建，如果存在该队列，则复用
         //生产者已经生命过了队列，可以忽略该步骤
         //channel.queueDeclare("workQueues", false, false, false, null);
-        String queueName2 = "test_fanout_queue2";
+        String queueName1 = "test_topic_queue1";
 
         //6.接收消息
         /*
@@ -73,11 +73,11 @@ public class ConsumerPubSub2 {
                 System.out.println("envelope.exchange:" + envelope.getExchange());
                 System.out.println("envelope.routingKey:" + envelope.getRoutingKey());
                 System.out.println("properties:" + properties);*/
-                System.out.println("消费者2从队列" + queueName2 + "接收到body:" + new String(body));
+                System.out.println("消费者1从队列" + queueName1 + "接收到body:" + new String(body));
 
             }
         };
-        channel.basicConsume(queueName2, true, consumer);
+        channel.basicConsume(queueName1, true, consumer);
 
         //7.消费者不需要关闭资源，不然无法完成自动确认
     }
