@@ -16,5 +16,6 @@ spring:
         retry:
           enabled: true #是否支持重试
           max-attempts: 4 #最大重试次数，默认为3
+        prefetch: 2 #消费端限流5 每个消费者未确认的未处理消息的最大数量
       direct:
         acknowledge-mode: manual    #acknowledgeMode设置为手动模式
