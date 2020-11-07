@@ -125,4 +125,21 @@ public class ProducerTest {
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "boot.test", "test msg send [false]");
     }
 
+
+    /*
+     * 功能描述: <br>
+     * 〈测试客户端限流，多发几条给客户端〉
+     * @Param: []
+     * @Return: void
+     * @Author: LeoLee
+     * @Date: 2020/11/8 3:06
+     */
+    @Test
+    public void testQos() {
+
+        for (int i = 1; i <= 10; i++) {
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "boot.test", "test msg send:[" + i + "]");
+        }
+    }
+
 }
