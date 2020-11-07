@@ -1,14 +1,15 @@
 package com.leolee.rabbitmq;
 
-import com.leolee.rabbitmq.config.RabbitMQConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.lang.Nullable;
-import org.springframework.test.context.junit4.SpringRunner;
+        import com.leolee.rabbitmq.config.RabbitMQConfig;
+        import org.junit.Test;
+        import org.junit.runner.RunWith;
+        import org.springframework.amqp.core.Message;
+        import org.springframework.amqp.rabbit.connection.CorrelationData;
+        import org.springframework.amqp.rabbit.core.RabbitTemplate;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.boot.test.context.SpringBootTest;
+        import org.springframework.lang.Nullable;
+        import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @ClassName com.leolee.rabbitmq.ProducerTest
@@ -62,6 +63,47 @@ public class ProducerTest {
 
         //发送消息
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "boot.test", "test msg send");
+    }
+
+
+    /*
+     * 功能描述: <br>
+     * 〈回退模式〉
+     * 1.开启回退模式 publisher-returns: true #开启return回退模式
+     * 2.设置returnCallBack
+     * 3.设置exchange处理消息的模式：
+     *     3.1.如果消息没有路由到Queue,丢弃消息，没有回调(默认设置)
+     *     3.2.如果消息没有路由到Queue,返回给消息的发送方ReturnCallBack
+     * @Param: []
+     * @Return: void
+     * @Author: LeoLee
+     * @Date: 2020/11/7 16:31
+     */
+    @Test
+    public void testReturnModel() {
+
+        /**
+         * @Param: [
+         * message 消息对象
+         * replyCode 返回code，失败码
+         * replyText 错误信息
+         * exchange 失败所处的交换机
+         * routingKey 消息的routingKey
+         * ]
+         */
+        rabbitTemplate.setReturnCallback((Message message, int replyCode, String replyText, String exchange, String routingKey) -> {
+            System.out.println("returnCallBack executed");
+            System.out.println("replyCode:" + replyCode);
+            System.out.println("replyText:" + replyText);
+            System.out.println("exchange:" + exchange);
+            System.out.println("routingKey:" + routingKey);
+        });
+
+        //设置交换机处理失败消息的模式为true，当消息没有路由到Queue,返回给消息的发送方ReturnCallBack
+        rabbitTemplate.setMandatory(true);
+
+        //发送消息(故意写错routingKey制造exchange消息分发错误)
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "11111.boot.test", "test msg send");
     }
 
 }

@@ -9,3 +9,4 @@ spring:
     password: lyl512240816
     virtual-host: /LeoLee
     publisher-confirms: true #开启confirm确认模式
+    publisher-returns: true #开启return回退模式
