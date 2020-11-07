@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestMsgListener {
 
-    public static final String EXCHANGE_NAME = "boot_topic_exchange";
-
     public static final String QUEUE_NAME = "boot_queue";
 
     @RabbitListener(queues = "boot_queue")
