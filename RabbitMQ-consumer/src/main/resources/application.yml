@@ -8,3 +8,13 @@ spring:
     username: LeoLee
     password: lyl512240816
     virtual-host: /LeoLee
+    listener:
+      simple:
+        acknowledge-mode: manual #消费者端确认模式:none自动确认 manual手动确认 auto通过抛出异常的类型，来做响应的处理
+        concurrency: 1 #当前监听的数量
+        max-concurrency: 5 #最大监听数量
+        retry:
+          enabled: true #是否支持重试
+          max-attempts: 4 #最大重试次数，默认为3
+      direct:
+        acknowledge-mode: manual    #acknowledgeMode设置为手动模式
