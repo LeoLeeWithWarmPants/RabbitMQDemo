@@ -61,7 +61,7 @@ public class ProducerTest {
             }
         });
 
-        //发送消息
+        //发送消息(可以故意写错exchange，模拟消息无法到达任何一个exchange)
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "boot.test", "test msg send");
     }
 
@@ -104,6 +104,25 @@ public class ProducerTest {
 
         //发送消息(故意写错routingKey制造exchange消息分发错误)
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "11111.boot.test", "test msg send");
+    }
+
+
+    /*
+     * 功能描述: <br>
+     * 〈测试Consumer Ack〉
+     * @Param: []
+     * @Return: void
+     * @Author: LeoLee
+     * @Date: 2020/11/7 21:12
+     */
+    @Test
+    public void testAck() {
+
+//        //消费者接收到该消息，解析到true，就模拟调用channel.basicAck确认签收消息
+//        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "boot.test", "test msg send [true]");
+
+        //消费者接收到该消息，解析到false，就模拟调用channel.basicNack，拒收消息，让MQ重发
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "boot.test", "test msg send [false]");
     }
 
 }
