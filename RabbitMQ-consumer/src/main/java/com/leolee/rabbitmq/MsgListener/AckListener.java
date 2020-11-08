@@ -52,7 +52,7 @@ public class AckListener implements ChannelAwareMessageListener {
             /*
              * deliveryTag：the tag from the received {@link com.rabbitmq.client.AMQP.Basic.GetOk} or {@link com.rabbitmq.client.AMQP.Basic.Deliver}
              * multiple: ture确认本条消息以及之前没有确认的消息，false仅确认本条消息
-             * requeue: true该条消息重新返回MQ queue，MQ broker将会重新发送该条消息
+             * requeue: true该条消息重新返回MQ queue，MQ broker将会重新发送该条消息，false的话会被转发到该队列独赢的死信队列，如果没有对应的死信队列则消息被丢弃
              */
             channel.basicNack(deliveryTag, false, true);
             //也可以使用channel.basicReject(deliveryTag, requeue),它只能拒收单条消息
