@@ -142,4 +142,36 @@ public class ProducerTest {
         }
     }
 
+
+    /*
+     * 功能描述: <br>
+     * 〈测试过期时间〉
+     * 1.队列的过期时间设置
+     * 2.针对某条消息的过期时间设置
+     *     如果设置了消息的过期时间，也设置了队列的过期时间，最终过期时间以两者中时间较短的为准
+     *     消息过期后并不会直接被移除掉，MQ并不是轮询所有队列中消息的过期时间，只有消息在顶端的时候才会去判断该条消息是否过期
+     * @Param: []
+     * @Return: void
+     * @Author: LeoLee
+     * @Date: 2020/11/8 11:58
+     */
+    @Test
+    public void testTTL() {
+
+        for (int i = 0; i < 10; i++) {
+            if ((i&1) == 1) {
+                System.out.println("奇数：" + i);
+                //该条消息测试队列过期
+                rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "ttl.test", "test msg ttl");
+            } else {
+                System.out.println("偶数：" + i);
+                //该条消息测试消息过期
+                rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "ttl.test", "test msg ttl", message -> {
+                    message.getMessageProperties().setExpiration("5000");
+                    return message;
+                });
+            }
+        }
+    }
+
 }
