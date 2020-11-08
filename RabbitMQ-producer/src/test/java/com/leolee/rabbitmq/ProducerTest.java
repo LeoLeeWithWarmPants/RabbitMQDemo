@@ -174,4 +174,27 @@ public class ProducerTest {
         }
     }
 
+
+    /*
+     * 功能描述: <br>
+     * 〈测试死信队列〉
+     * 1、过期的消息：队列中的消息到达了过期时间还没有被消费，就会变成死信
+     * 2、队列中消息的长度到达限制：超过某个队列的最大存储消息个数之后的，其他被exchange分发到该队列的消息直接称为死信队列
+     * 3、消费端拒接消息：当消费者端手动确认模式下拒绝了某条消息，并且设置了requeue=false之后，这条消息并不会被放回原队列，而是变为死信
+     * @Param:
+     * @Return:
+     * @Author: LeoLee
+     * @Date: 2020/11/8 14:50
+     */
+    @Test
+    public void testDLX() {
+
+        //这些消息将会被发到正常队列中
+        for (int i = 0; i < 2; i++) {
+            //该条消息测试队列过期
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "ttl.abc", "test msg dlx");
+
+        }
+    }
+
 }
